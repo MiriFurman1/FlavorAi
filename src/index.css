@@ -35,7 +35,7 @@ body {
   max-width: 100vw;
   min-width: 320px;
 
-  background-color: #060a1d;
+
 }
 
 h1 {
@@ -64,6 +64,10 @@ button:focus-visible {
 #root{
   margin: 0;
   padding: 0;
+  max-width: 100vw;
+  min-height: 100vh;
+  background-color: #060a1d;
+  box-sizing: border-box;
 }
 
 @media (prefers-color-scheme: light) {
