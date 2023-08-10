@@ -6,24 +6,32 @@ import { InfinitySpin } from "react-loader-spinner";
 
 function MainLayout() {
   const [recipe, setRecipe] = useState(null);
-  const [chosenModel, setChosenModel] = useState(null);
+  const [chosenModel, setChosenModel] = useState("GPT-2 Trained");
   const [prompt, setPrompt] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const apiRequest = () => {
     setIsLoading(true);
     let modelURL = ""; // Initialize with an empty URL
-
+    let finalPrompt=""
+    
     if (chosenModel === "GPT-2 Trained") {
       modelURL =
         "https://api-inference.huggingface.co/models/MiriFur/gpt2-recipes";
+        finalPrompt=prompt + ". title:"
+        console.log(finalPrompt);
+    
     } else if (chosenModel === "GPT-2") {
       modelURL = "https://api-inference.huggingface.co/models/gpt2";
+      finalPrompt=prompt;
+      console.log(finalPrompt);
+
     } else if (chosenModel === "GPT-3") {
       modelURL = "URL for GPT-3 model"; // Replace with the actual URL
     }
+
     query(modelURL, {
-      inputs: prompt + ". title:",
+      inputs: finalPrompt,
       parameters: { temperature: 2, max_length: 499 },
       options: { wait_for_model: true },
     }).then((response) => {
@@ -63,7 +71,7 @@ function MainLayout() {
         <Button content={"GPT-3"} setChosenModel={setChosenModel} />
       </div>
 
-      {chosenModel&&<p className="text-white">model used: {chosenModel}</p>}
+      {chosenModel&&<p className="text-white">Model Used: {chosenModel}</p>}
 
       <input
         type="text"
@@ -80,7 +88,8 @@ function MainLayout() {
 
         {isLoading && <InfinitySpin width="200" color="#4fa94d" />}
       </div>
-      <div className="bg-white min-h-1/2 max-h-1/2  w-1/2 ">
+      <div className="bg-slate-300   w-5/6 m-5 p-7 whitespace-pre-line	text-left border rounded	">
+
         <p>{recipe}</p>
       </div>
     </div>
