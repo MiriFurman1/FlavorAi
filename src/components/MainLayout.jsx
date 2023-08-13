@@ -9,26 +9,29 @@ function MainLayout() {
   const [chosenModel, setChosenModel] = useState("GPT-2 Trained");
   const [prompt, setPrompt] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [error,setError]=useState(null)
 
   const apiRequest = () => {
     setIsLoading(true);
-    let modelURL = ""; // Initialize with an empty URL
+    let modelURL = ""; 
     let finalPrompt=""
     
     if (chosenModel === "GPT-2 Trained") {
       modelURL =
         "https://api-inference.huggingface.co/models/MiriFur/gpt2-recipes";
         finalPrompt=prompt + ". title:"
-        console.log(finalPrompt);
+
     
     } else if (chosenModel === "GPT-2") {
       modelURL = "https://api-inference.huggingface.co/models/gpt2";
       finalPrompt=prompt;
-      console.log(finalPrompt);
 
-    } else if (chosenModel === "GPT-3") {
-      modelURL = "URL for GPT-3 model"; // Replace with the actual URL
+    } 
+    else if(chosenModel==="GPT-3.5"){
+      gpt3Request();
+      return;
     }
+   
 
     query(modelURL, {
       inputs: finalPrompt,
@@ -63,12 +66,42 @@ function MainLayout() {
     });
   };
 
+  const gpt3Request=async()=>{
+    const modelURL = import.meta.env.PROD === 'production' ? "https://flavorai-backend.onrender.com" : "http://localhost:3000";
+    setChosenModel("GPT-3.5")
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    
+    const raw = JSON.stringify({
+        "prompt": prompt
+    });
+    
+    const requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+    };
+
+    try {
+        const response = await fetch(modelURL, requestOptions);
+        const result = await response.text();
+        const jsonResponse = JSON.parse(result);
+        const recipe = jsonResponse.result;
+        setRecipe(recipe);
+        setPrompt("");
+        setIsLoading(false);
+    } catch (error) {
+        setError(error);
+    }
+  }
+
   return (
     <div className="h-5/6 w-screen m-0 flex justify-center items-center flex-col">
       <div className="flex flex-wrap justify-center">
         <Button content={"GPT-2"} setChosenModel={setChosenModel} />
         <Button content={"GPT-2 Trained"} setChosenModel={setChosenModel} />
-        <Button content={"GPT-3"} setChosenModel={setChosenModel} />
+        <Button content={"GPT-3.5"} setChosenModel={setChosenModel} />
       </div>
 
       {chosenModel&&<p className="text-white">Model Used: {chosenModel}</p>}

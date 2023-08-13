@@ -1,5 +1,5 @@
 async function query(modelURL, data) {
-	console.log(modelURL);
+	console.log(data);
 	const response = await fetch(modelURL, {
 		headers: { Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}` },
 		method: "POST",
