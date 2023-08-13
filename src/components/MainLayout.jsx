@@ -67,7 +67,8 @@ function MainLayout() {
   };
 
   const gpt3Request=async()=>{
-    const modelURL = import.meta.env.PROD === 'production' ? "https://flavorai-backend.onrender.com" : "http://localhost:3000";
+    const modelURL = import.meta.env.PROD? "https://flavorai-backend.onrender.com" : "http://localhost:3000";
+    console.log(import.meta.env.PROD);
     setChosenModel("GPT-3.5")
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
