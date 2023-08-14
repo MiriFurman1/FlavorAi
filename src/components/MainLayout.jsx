@@ -35,7 +35,7 @@ function MainLayout() {
 
     query(modelURL, {
       inputs: finalPrompt,
-      parameters: { temperature: 0.8, max_length: 499 },
+      parameters: { temperature: 2, max_length: 499 },
       options: { wait_for_model: true },
     }).then((response) => {
       try {
