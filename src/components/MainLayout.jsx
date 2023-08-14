@@ -35,7 +35,7 @@ function MainLayout() {
 
     query(modelURL, {
       inputs: finalPrompt,
-      parameters: { temperature: 2, max_length: 499 },
+      parameters: { temperature: 0.8, max_length: 499 },
       options: { wait_for_model: true },
     }).then((response) => {
       try {
@@ -59,6 +59,7 @@ function MainLayout() {
 
         setPrompt("");
       } catch (error) {
+        setError(error)
         console.error("An error occurred:", error);
       } finally {
         setIsLoading(false);
@@ -94,6 +95,7 @@ function MainLayout() {
         setIsLoading(false);
     } catch (error) {
         setError(error);
+        console.log(error)
     }
   }
 
@@ -121,6 +123,7 @@ function MainLayout() {
         </button>
 
         {isLoading && <InfinitySpin width="200" color="#4fa94d" />}
+        {error&&<div className="text-emerald-700">{error}</div>}
       </div>
       {recipe&&<div className="bg-slate-300 w-4/6 m-5 p-7 whitespace-pre-line	text-left border rounded	">
         <p className="">{recipe}</p>
