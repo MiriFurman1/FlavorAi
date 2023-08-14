@@ -68,7 +68,7 @@ function MainLayout() {
 
   const gpt3Request=async()=>{
     const modelURL = import.meta.env.PROD? "https://flavorai-backend.onrender.com" : "http://localhost:3000";
-    console.log(import.meta.env.PROD);
+
     setChosenModel("GPT-3.5")
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -98,8 +98,8 @@ function MainLayout() {
   }
 
   return (
-    <div className="h-5/6 w-screen m-0 flex justify-center items-center flex-col">
-      <div className="flex flex-wrap justify-center">
+    <div className="h-5/6 max-w-screen  m-0 flex justify-center items-center flex-col">
+      <div className=" flex flex-wrap justify-center">
         <Button content={"GPT-2"} setChosenModel={setChosenModel} />
         <Button content={"GPT-2 Trained"} setChosenModel={setChosenModel} />
         <Button content={"GPT-3.5"} setChosenModel={setChosenModel} />
@@ -116,16 +116,15 @@ function MainLayout() {
       />
 
       <div className="flex">
-        <button className="bg-emerald-700 w-30 h-10 m-5" onClick={apiRequest}>
+        <button className="bg-emerald-700 w-30 h-13 m-5 p-2" onClick={apiRequest}>
           Generate
         </button>
 
         {isLoading && <InfinitySpin width="200" color="#4fa94d" />}
       </div>
-      <div className="bg-slate-300   w-5/6 m-5 p-7 whitespace-pre-line	text-left border rounded	">
-
-        <p>{recipe}</p>
-      </div>
+      {recipe&&<div className="bg-slate-300 w-4/6 m-5 p-7 whitespace-pre-line	text-left border rounded	">
+        <p className="">{recipe}</p>
+      </div>}
     </div>
   );
 }
